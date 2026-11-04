@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#172554">
+  <title>Hajiri Register</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">CONSTRUCTION WORK</p>
+      <h1>Hajiri Register</h1>
+      <p class="subtitle">Daily attendance · Wages · Payments</p>
+    </div>
+    <span class="offline-badge" id="connectionStatus">Offline-ready</span>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <div class="section-heading"><div><p class="eyebrow">WORK LOCATION</p><h2>Site</h2></div></div>
+      <div class="form-row">
+        <label class="field grow">Select site<select id="siteSelect"></select></label>
+        <button class="button button-secondary" id="addSiteButton" type="button">+ Add site</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading"><div><p class="eyebrow">DAILY REGISTER</p><h2>Attendance</h2></div></div>
+      <label class="field date-field">Date<input id="attendanceDate" type="date"></label>
+      <div id="attendanceList" class="attendance-list"></div>
+      <p id="emptyAttendance" class="empty-state" hidden>No labourers added yet. Add labourers below.</p>
+      <div id="attendanceSummary" class="summary-strip"></div>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading"><div><p class="eyebrow">TEAM</p><h2>Labourers</h2></div></div>
+      <form id="workerForm" class="form-grid">
+        <label class="field">Labourer name<input id="workerName" maxlength="60" required placeholder="e.g. Ramesh"></label>
+        <label class="field">Daily wage (₹)<input id="workerWage" type="number" min="0" step="1" required placeholder="e.g. 600"></label>
+        <button class="button button-primary full-width" type="submit">Add labourer</button>
+      </form>
+      <div id="workerDirectory" class="worker-directory"></div>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading"><div><p class="eyebrow">CASH RECORD</p><h2>Advance / Payment</h2></div></div>
+      <form id="paymentForm" class="form-grid">
+        <label class="field">Labourer<select id="paymentWorker" required></select></label>
+        <label class="field">Type<select id="paymentType"><option value="advance">Advance</option><option value="payment">Wage payment</option></select></label>
+        <label class="field">Amount (₹)<input id="paymentAmount" type="number" min="1" step="1" required placeholder="Amount"></label>
+        <label class="field">Date<input id="paymentDate" type="date" required></label>
+        <label class="field full-width">Note (optional)<input id="paymentNote" maxlength="120" placeholder="e.g. Paid in cash"></label>
+        <button class="button button-primary full-width" type="submit">Save transaction</button>
+      </form>
+      <div id="recentTransactions" class="transaction-list"></div>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading"><div><p class="eyebrow">MONTHLY OVERVIEW</p><h2>Wage report</h2></div></div>
+      <label class="field date-field">Month<input id="reportMonth" type="month"></label>
+      <div id="monthlyReport" class="report-list"></div>
+      <div class="button-row">
+        <button class="button button-secondary" id="exportCsvButton" type="button">Export CSV</button>
+        <button class="button button-secondary" id="backupButton" type="button">Backup data</button>
+        <button class="button button-secondary" id="restoreButton" type="button">Restore backup</button>
+        <input id="restoreFile" type="file" accept="application/json,.json" hidden>
+      </div>
+    </section>
+
+    <footer class="footer-note">Your register is saved on this device. Keep regular backups, especially before changing phones or clearing browser data.</footer>
+  </main>
+
+  <dialog id="siteDialog" class="dialog">
+    <form method="dialog" id="siteForm" class="dialog-card">
+      <h2>Add construction site</h2>
+      <label class="field">Site name<input id="newSiteName" maxlength="60" required placeholder="e.g. School building"></label>
+      <div class="button-row"><button class="button button-secondary" value="cancel">Cancel</button><button class="button button-primary" id="saveSiteButton" value="default">Add site</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="editWorkerDialog" class="dialog">
+    <form method="dialog" id="editWorkerForm" class="dialog-card">
+      <h2>Edit labourer</h2>
+      <input id="editWorkerId" type="hidden">
+      <label class="field">Name<input id="editWorkerName" maxlength="60" required></label>
+      <label class="field">Current daily wage (₹)<input id="editWorkerWage" type="number" min="0" step="1" required></label>
+      <p class="help-text">Changing the wage affects future attendance only. Saved past attendance keeps its original wage.</p>
+      <div class="button-row"><button class="button button-secondary" value="cancel">Cancel</button><button class="button button-primary" id="saveWorkerButton" value="default">Save changes</button></div>
+    </form>
+  </dialog>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
